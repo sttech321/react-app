@@ -119,7 +119,7 @@ export const changePassword = async (passwords) => {
 export const fetchUsers = async (page = 1, searchTerm = "", limit = 10) => {
   try {
     const { data } = await API.get("/users/usersList", {
-      params: { page, limit, searchTerm },   // sends ?page=..&limit=..&searchTerm=..
+      params: { page, limit, search: searchTerm },   // backend expects 'search' not 'searchTerm'
     });
     return { success: true, data };
   } catch (error) {
@@ -144,3 +144,31 @@ export const deleteUser = async (userId) => {
     };
   }
 };
+
+export const createUser = async (userData) => {
+  try {
+    const { data } = await API.post("/users/createUser", userData);
+    return { success: true, data };
+  } catch (error) {
+    console.error("Create user error:", error);
+    return {
+      success: false,
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const updateUser = async (userId, userData) => {
+  try {
+    const { data } = await API.put(`/users/updateUser/${userId}`, userData);
+    return { success: true, data };
+  } catch (error) {
+    console.error("Update user error:", error);
+    return {
+      success: false,
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+
